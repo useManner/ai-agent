@@ -233,45 +233,63 @@ p.greet()
 ```
 
 ## 12. 常用内置函数
-- print, len, range, type, input, ord, chr, sum, max, min, sorted
+- print：打印输出内容到屏幕。
+- len：获取序列（如字符串、列表、元组等）的长度。
+- range：生成一个整数序列，常用于循环。
+- type：查看变量的数据类型。
+- input：获取用户输入（字符串类型）。
+- ord：获取字符的 ASCII/Unicode 编码。
+- chr：将编码转换为字符。
+- sum：求和。
+- max/min：求最大/最小值。
+- sorted：排序。
+
 ```python
-print(len([1,2,3]))  # 求长度
-print(list(range(3)))  # 生成序列
-print(type(3.14))  # 类型
-print(ord('A'), chr(65))  # 字符与ASCII码
+print(len([1,2,3]))  # 求长度，输出3
+print(list(range(3)))  # 生成序列[0,1,2]
+print(type(3.14))  # 类型 float
+print(ord('A'), chr(65))  # 字符与ASCII码 65 A
 print(sum([1,2,3]), max([1,2,3]), min([1,2,3]), sorted([3,1,2]))
-name = input('请输入姓名：')
+name = input('请输入姓名：')  # 用户输入
 print('你输入的是：', name)
 ```
 
-## 13. 列表推导式：[x for x in range(10)]
-  - 快速生成新列表
+注意事项：
+- input 获取到的内容都是字符串，需要转换类型（如 int(input())）。
+- range 生成的是迭代器，常用 list(range(10)) 转为列表。
+- sorted 返回新列表，不会改变原列表。
+
+## 13. 列表推导式、生成器、迭代器
+- 列表推导式：快速生成新列表，语法简洁。
 ```python
-lst = [x * x for x in range(5)]
+lst = [x * x for x in range(5)]  # [0,1,4,9,16]
 print(lst)
 ```
-- 生成器：yield
-  - 节省内存，按需生成数据
+- 生成器：用 yield 语句返回一个值，函数不会一次性返回所有结果，而是每次调用生成一个结果，节省内存。
 ```python
 def gen():
     for i in range(3):
         yield i
-g = gen()
-print(next(g))  # 取下一个值
-for v in g:
-    print(v)
+# 生成器对象
+my_gen = gen()
+print(next(my_gen))  # 取下一个值 0
+for v in my_gen:
+    print(v)  # 输出1,2
 ```
-- 迭代器：iter, next
-  - 可遍历对象
+- 迭代器：用 iter() 和 next() 遍历对象。
 ```python
 it = iter([1,2,3])
-print(next(it))
-print(next(it))
+print(next(it))  # 1
+print(next(it))  # 2
 ```
 
+注意事项：
+- next() 取不到值会抛 StopIteration 异常。
+- 生成器只能遍历一次。
+- 列表推导式适合简单场景，复杂逻辑建议用循环。
+
 ## 14. 装饰器、闭包
-- 装饰器：@func
-  - 用于扩展函数功能
+- 装饰器：用 @func 语法扩展函数功能，常用于日志、权限校验等。
 ```python
 def log(func):
     def wrapper(*args, **kwargs):
@@ -286,8 +304,7 @@ def hello():
     print('hello')
 hello()
 ```
-- 闭包：函数内定义函数并返回
-  - 内部函数可以访问外部变量
+- 闭包：函数内定义函数并返回，内部函数可以访问外部变量。
 ```python
 def outer():
     x = 10
@@ -295,13 +312,16 @@ def outer():
         print(x)
     return inner
 f = outer()
-f()
+f()  # 输出10
 ```
 
+注意事项：
+- 装饰器要返回 wrapper，否则原函数无法调用。
+- 闭包常用于工厂函数、延迟计算。
+
 ## 15. 注释与文档字符串
-- 单行注释：#
-- 多行注释/文档字符串：'''...'''
-  - 注释用于解释代码，文档字符串用于说明函数/类用途
+- 单行注释：用 # 开头，解释代码。
+- 多行注释/文档字符串：用 '''...''' 或 """...""" 包裹，常用于说明函数、类用途。
 ```python
 # 这是单行注释
 '''
@@ -312,16 +332,25 @@ def foo():
     pass
 ```
 
+注意事项：
+- 注释要简洁明了，避免冗余。
+- 文档字符串建议写在函数/类开头，方便自动生成文档。
+
 ## 16. 虚拟环境与包管理
-- pip install 包名：安装第三方库
-- venv 创建虚拟环境：隔离项目依赖
-- requirements.txt 管理依赖：批量安装
+- pip install 包名：安装第三方库。
+- venv 创建虚拟环境：隔离项目依赖，防止不同项目冲突。
+- requirements.txt 管理依赖：批量安装。
 ```shell
 python -m venv venv  # 创建虚拟环境
-venv\Scripts\activate  # 激活环境
+venv\Scripts\activate  # 激活环境（Windows）
 pip install numpy  # 安装包
 pip freeze > requirements.txt  # 导出依赖
 ```
+
+注意事项：
+- 每个项目建议用独立虚拟环境。
+- requirements.txt 可用 pip install -r requirements.txt 批量安装。
+- 激活/退出虚拟环境要用对应命令（Windows/Unix不同）。
 
 ---
 
